@@ -3,7 +3,6 @@ from multiprocessing import Pool
 from urllib.parse import urlencode
 from openpyxl import Workbook
 import requests
-import os
 
 
 def get_index_page(pn):
@@ -33,20 +32,20 @@ def get_index_page(pn):
     return content_list
 
 
-def save_content(content):
+def save_content(content, pn):
     wb = Workbook()
     ws = wb.active
     ws.title = 'python爬虫工程师'
     for row in content:
         ws.append(row)
-    wb.save('职位信息1.xlsx')
+    wb.save('职位信息%s.xlsx' % pn)
 
 
 def main(pn):
     content = get_index_page(pn)
-    save_content(content)
+    save_content(content, pn)
 
 if __name__ == '__main__':
-    groups = [x for x in range(1, 10)]
+    groups = [x for x in range(1, 45)]
     pool = Pool()
     pool.map(main, groups)
